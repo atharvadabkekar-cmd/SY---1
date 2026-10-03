@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Architecture - Square</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f5f7;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+        }
+        /* The exact 1:1 Square Container */
+        .diagram-container {
+            width: 900px;
+            height: 900px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        .title {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a365d;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #1a365d;
+            padding-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            grid-template-rows: 1fr 60px 1fr 60px 1fr;
+            flex-grow: 1;
+            gap: 10px;
+            align-items: center;
+        }
+        .box {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+        }
+        .box-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000;
+        }
+        .box-text {
+            font-size: 18px;
+            color: #333;
+            line-height: 1.4;
+        }
+        ul {
+            text-align: left;
+            margin: 10px auto 0 auto;
+            padding-left: 20px;
+            font-size: 18px;
+            width: fit-content;
+        }
+        li { margin-bottom: 6px; }
+        
+        /* Specific Box Colors matching the original image */
+        .box-aws { background: #ffffff; border: none; }
+        .box-green { background: #e6f4ea; border-color: #b7e1cd; }
+        .box-blue { background: #e8f0fe; border-color: #aecbfa; }
+        .box-yellow { background: #fef7e0; border-color: #fde293; }
+        .box-purple { background: #f3e8fd; border-color: #d7bcfb; }
+        .box-dash { background: #ffffff; border: none; }
+
+        .icon { font-size: 50px; margin-bottom: 10px; }
+
+        /* Arrows */
+        .arrow-right { text-align: center; font-size: 40px; color: #5f6368; }
+        .arrow-left { text-align: center; font-size: 40px; color: #5f6368; }
+        .arrow-down-right { 
+            grid-column: 3; 
+            text-align: center; 
+            font-size: 40px; 
+            color: #5f6368; 
+        }
+        .arrow-down-left { 
+            grid-column: 1; 
+            text-align: center; 
+            font-size: 40px; 
+            color: #5f6368; 
+        }
+
+        /* Feedback Loop */
+        .feedback-loop {
+            margin-top: 30px;
+            border-top: 3px dashed #1967d2;
+            padding-top: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1967d2;
+            position: relative;
+        }
+        /* Upward arrows for feedback */
+        .feedback-loop::before, .feedback-loop::after {
+            content: "↑";
+            position: absolute;
+            top: -22px;
+            font-size: 30px;
+            color: #1967d2;
+        }
+        .feedback-loop::before { left: 20%; }
+        .feedback-loop::after { right: 20%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="diagram-container">
+        <div class="title">System Architecture (Overview)</div>
+        
+        <div class="grid">
+            <!-- ROW 1: AWS to Ingestion -->
+            <div class="box box-aws">
+                <div class="icon">📡</div>
+                <div class="box-title">AWS</div>
+                <div class="box-text">(Temperature, Humidity, Pressure)</div>
+            </div>
+            
+            <div class="arrow-right">➔</div>
+            
+            <div class="box box-green">
+                <div class="icon">🗄️</div>
+                <div class="box-title">DATA INGESTION<br>& PREPROCESSING</div>
+                <div class="box-text">(Cleaning, Validation, Feature Extraction)</div>
+            </div>
+
+            <!-- ROW 2: Arrow Down -->
+            <div></div><div></div>
+            <div class="arrow-down-right">⬇</div>
+
+            <!-- ROW 3: Contextual validation from AI/ML (Right to Left flow) -->
+            <div class="box box-yellow">
+                <div class="icon">🔍</div>
+                <div class="box-title">CONTEXTUAL VALIDATION</div>
+                <ul>
+                    <li>Temporal Analysis</li>
+                    <li>Sensor Correlation</li>
+                    <li>Historical Patterns</li>
+                    <li>Nearby AWS Comparison</li>
+                </ul>
+            </div>
+
+            <div class="arrow-left">⬅</div>
+
+            <div class="box box-blue">
+                <div class="icon">🧠</div>
+                <div class="box-title">AI/ML ENGINE</div>
+                <div class="box-text">(Anomaly Detection & Scoring)</div>
+            </div>
+
+            <!-- ROW 4: Arrow Down -->
+            <div class="arrow-down-left">⬇</div>
+            <div></div><div></div>
+
+            <!-- ROW 5: Decision to Dashboard (Left to Right flow) -->
+            <div class="box box-purple">
+                <div class="icon">⚠️</div>
+                <div class="box-title">DECISION & ALERT</div>
+                <ul>
+                    <li>Normal / Suspicious</li>
+                    <li>Sensor Fault</li>
+                    <li>Data Issue</li>
+                    <li>Genuine Extreme Event</li>
+                </ul>
+            </div>
+
+            <div class="arrow-right">➔</div>
+
+            <div class="box box-dash">
+                <div class="icon">💻</div>
+                <div class="box-title">DASHBOARD<br>& ALERT SYSTEM</div>
+                <div class="box-text">(Visualization & Notifications)</div>
+            </div>
+        </div>
+
+        <!-- Feedback Loop -->
+        <div class="feedback-loop">
+            <span style="position: absolute; left: 50%; top: -22px; transform: translateX(-50%); font-size: 30px;">↑</span>
+            Feedback Loop for Continuous Learning
+        </div>
+    </div>
+
+</body>
+</html>
